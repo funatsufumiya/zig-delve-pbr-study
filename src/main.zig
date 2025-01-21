@@ -4,6 +4,8 @@ const app = delve.app;
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
 
+const pbr_shader_glsl = @import("./shaders/pbr.glsl.zig");
+
 // easy access to some imports
 const cam = delve.graphics.camera;
 const colors = delve.colors;
@@ -24,6 +26,7 @@ const Color = colors.Color;
 const lit_shader = delve.shaders.default_basic_lighting;
 
 var static_shader: graphics.Shader = undefined;
+var pbr_shader: graphics.Shader = undefined;
 
 var time: f32 = 0.0;
 var camera: cam.Camera = undefined;
@@ -80,6 +83,9 @@ fn on_init() !void {
 
     // make shaders for meshes
     static_shader = try graphics.Shader.initFromBuiltin(.{ .vertex_attributes = delve.graphics.mesh.getShaderAttributes() }, lit_shader);
+    // const shader_info = pbr_shader.getShaderInfo();
+    pbr_shader = try delve.platform.graphics.Shader.initFromBuiltin(.{ .vertex_attributes = delve.graphics.mesh.getShaderAttributes() }, pbr_shader_glsl);
+
 
     // Create a material out of the texture
     static_mesh_material = try graphics.Material.init(.{
@@ -162,4 +168,6 @@ fn on_cleanup() !void {
 
     static_shader.destroy();
     static_mesh_material.deinit();
+
+    pbr_shader.destroy();
 }
