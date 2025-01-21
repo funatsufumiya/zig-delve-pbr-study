@@ -25,7 +25,7 @@ const Color = colors.Color;
 // use the basic lit shaders
 const lit_shader = delve.shaders.default_basic_lighting;
 
-var static_shader: graphics.Shader = undefined;
+// var static_shader: graphics.Shader = undefined;
 var pbr_shader: graphics.Shader = undefined;
 
 var time: f32 = 0.0;
@@ -39,6 +39,26 @@ var cube5: delve.graphics.mesh.Mesh = undefined;
 
 // var skinned_mesh_material: delve.platform.graphics.Material = undefined;
 var static_mesh_material: delve.platform.graphics.Material = undefined;
+
+const pbr_vs_uniforms_layout: []const graphics.MaterialUniformDefaults =
+    &[_]graphics.MaterialUniformDefaults{
+        .PROJECTION_VIEW_MATRIX,
+        .MODEL_MATRIX,
+        .COLOR,
+        .TEXTURE_PAN
+    };
+
+const pbr_fs_uniforms_layout: []const graphics.MaterialUniformDefaults =
+    &[_]graphics.MaterialUniformDefaults{
+        .CAMERA_POSITION,
+        .COLOR_OVERRIDE,
+        .ALPHA_CUTOFF,
+        .AMBIENT_LIGHT,
+        .DIRECTIONAL_LIGHT,
+        .POINT_LIGHTS_16,
+        .FOG_DATA
+    };
+
 
 // This example shows an example of some simple lighting in a shader
 
@@ -82,19 +102,21 @@ fn on_init() !void {
     camera.position = Vec3.new(0.0, 0.0, 0.0);
 
     // make shaders for meshes
-    static_shader = try graphics.Shader.initFromBuiltin(.{ .vertex_attributes = delve.graphics.mesh.getShaderAttributes() }, lit_shader);
+    // static_shader = try graphics.Shader.initFromBuiltin(.{ .vertex_attributes = delve.graphics.mesh.getShaderAttributes() }, lit_shader);
     // const shader_info = pbr_shader.getShaderInfo();
     pbr_shader = try delve.platform.graphics.Shader.initFromBuiltin(.{ .vertex_attributes = delve.graphics.mesh.getShaderAttributes() }, pbr_shader_glsl);
 
 
     // Create a material out of the texture
     static_mesh_material = try graphics.Material.init(.{
-        .shader = static_shader,
+        // .shader = static_shader,
+        .shader = pbr_shader,
         .texture_0 = delve.platform.graphics.createSolidTexture(0xFFFFFFFF),
         .texture_1 = delve.platform.graphics.createSolidTexture(0x00000000),
 
         // use the FS layout that supports lighting
-        .default_fs_uniform_layout = delve.platform.graphics.default_lit_fs_uniforms,
+        .default_vs_uniform_layout = pbr_vs_uniforms_layout,
+        .default_fs_uniform_layout = pbr_fs_uniforms_layout
     });
 
     // make some cubes
@@ -166,7 +188,7 @@ fn on_draw() void {
 fn on_cleanup() !void {
     debug.log("Lighting example module cleaning up", .{});
 
-    static_shader.destroy();
+    // static_shader.destroy();
     static_mesh_material.deinit();
 
     pbr_shader.destroy();
