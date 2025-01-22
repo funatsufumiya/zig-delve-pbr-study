@@ -16,6 +16,12 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
+    // const sokol_dep = b.dependency("sokol", .{
+    //     .source_file = b.path("src/reexport/sokol.zig"),
+    //     .target = target,
+    //     .optimize = optimize,
+    // });
+
     for (variants) |variant| {
         const exe_name = if (variant.len == 0) 
             "delve_pbr_study" 
@@ -39,6 +45,7 @@ pub fn build(b: *std.Build) void {
             .optimize = optimize,
         });
 
+        exe.root_module.addImport("sokol", delve_dep.module("sokol"));
         exe.root_module.addImport("delve", delve_dep.module("delve"));
 
         b.installArtifact(exe);

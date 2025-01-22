@@ -1,5 +1,6 @@
-// const sg = @import("sokol").gfx;
-const sg = @import("delve").sokol.gfx;
+const sg = @import("sokol").gfx;
+// const sg = @import("delve_sokol").gfx;
+// const sg = @import("delve").sokol.gfx;
 const std = @import("std");
 const m = @import("../../math.zig");
 //

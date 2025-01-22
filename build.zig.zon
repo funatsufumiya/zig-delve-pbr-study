@@ -24,8 +24,8 @@
     // internet connectivity.
     .dependencies = .{
         .delve = .{
-            .url = "git+https://github.com/funatsufumiya/delve-framework#77a6ffb8278870a3f3fceb58033f296059f537a5",
-            .hash = "1220297b559c8e9e54da3454f796a33db942d34233aca25b3da904af0ce98c8702e4",
+            .url = "git+https://github.com/funatsufumiya/delve-framework#1211a792c9795642f564ce6c6b9e1b7c8334acfd",
+            .hash = "12203570142127423419aa756dac6be1d9cf7896beb07de6b9018a08c01950f153fb",
         },
     },
     .paths = .{
