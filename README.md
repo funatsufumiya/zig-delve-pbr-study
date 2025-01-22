@@ -1,5 +1,7 @@
 # zig-delve-pbr-study
 
+***WORK IN PROGRESS***
+
 Tiny example of using [delve](https://github.com/Interrupt/delve-framework) as external library.
 
 Tested with Zig 0.13.0.
